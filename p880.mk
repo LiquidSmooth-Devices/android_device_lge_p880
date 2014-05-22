@@ -116,6 +116,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/init.rmnet-down:system/bin/init.rmnet-down \
     $(LOCAL_PATH)/prebuilt/init.rawip:system/bin/init.rawip
 
+# OTA ID
+PRODUCT_PROPERTY_OVERRIDES += \
+    otaupdater.otaid=liquidp880
+
 # For SELinux
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/51selinux:system/etc/init.d/51selinux
