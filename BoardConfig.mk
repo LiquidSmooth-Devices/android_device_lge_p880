@@ -35,7 +35,7 @@ TARGET_RECOVERY_PRE_COMMAND := "/system/bin/setup-recovery"
 
 # Try to build the kernel
 TARGET_KERNEL_CONFIG := cyanogenmod_x3_defconfig
-TARGET_GCC_VERSION_ARM := LK
+TARGET_GCC_VERSION_ARM := 4.7-linaro
 TARGET_GCC_VERSION_AND := 4.8-sm
 
 # Keep this as a fallback
