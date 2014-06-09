@@ -31,6 +31,26 @@ on init
 
     mkdir /storage/sdcard1 0000 system system
 
+on early-boot
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
+    restorecon /sys/devices/system/cpu
+    restorecon /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/boost
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/boost_factor
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/input_boost
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/max_boost
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/sustain_load
+    restorecon /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+
 on fs
     mount_all ./fstab.x3
 
@@ -89,6 +109,11 @@ on boot
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/lpm
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/btwrite
 
+# NFC
+    setprop ro.nfc.port "I2C"
+    chmod 0660 /dev/pn544
+    chown nfc nfc /dev/pn544
+
 # backlight
     chown system radio /sys/class/leds/lcd-backlight/brightness
     chmod 0664 /sys/class/leds/lcd-backlight/brightness
@@ -120,9 +145,8 @@ on boot
     chown system radio /sys/class/power_supply/charger/device/chgcc_ta
 
 # didim
-    chown system system /sys/devices/nvhost/tegradc.0/smartdimmer/enable
-    chown system system /sys/devices/nvhost/tegradc.0/smartdimmer/aggressiveness
-    chown system system /sys/devices/nvhost/tegradc.0/smartdimmer/phase_in_video
+    chown system system /sys/class/graphics/fb0/device/smartdimmer/enable
+    chown system system /sys/class/graphics/fb0/device/smartdimmer/aggressiveness
 
 # power
     chown system system /sys/kernel/tegra_cap/core_cap_level
@@ -169,24 +193,24 @@ on boot
     write /sys/module/cpu_tegra3/parameters/no_lp 0
     #write /sys/module/tegra3_emc/parameters/emc_enable 0
     #write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 1000000
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/cores_states
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/cores_states
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    write /sys/module/cpu_tegra/parameters/force_policy_max Y
     write /sys/devices/system/cpu/cpufreq/interactive/boost_factor 2
+    write /sys/devices/system/cpu/cpufreq/interactive/input_boost 1
     write /sys/devices/system/cpu/cpufreq/interactive/sustain_load 80
     write /sys/module/cpu_tegra3/parameters/auto_hotplug 1
-    write /sys/module/cpuidle/parameters/lp2_in_idle 1
+    #write /sys/module/cpuidle_t3/parameters/lp2_0_in_idle 0
+    write /sys/module/cpuidle/parameters/lp2_in_idle 0
 
-# Interactive dynamic frequecy mode settings
-    write /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load 95
-    write /sys/devices/system/cpu/cpufreq/interactive/dynamic_freq_mode 1
-    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 20000
+# Interactive governor settings
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boost_factor
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boost_factor
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/max_boost
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/max_boost
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/sustain_load
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/sustain_load
 
 # Power Save for camera preview and recording
     chown media camera /sys/devices/platform/tegra_camera/power_save_preview
@@ -209,10 +233,6 @@ on boot
     write /proc/sys/net/ipv6/conf/rmnet1/disable_ipv6 1
     write /proc/sys/net/ipv6/conf/rmnet2/disable_ipv6 1
 #LGE_CHANGE_E 20120720, hwansuk.kang@lge.com [data] Disable IPv6 for mobile network
-
-# didim
-    chown system system /sys/class/graphics/fb0/device/smartdimmer/enable
-    chown system system /sys/class/graphics/fb0/device/smartdimmer/aggressiveness
 
 #LGE_RIL_START sabina.park@lge.com
 service rawip_rmnet1 /system/bin/init.rmnet 1
@@ -305,7 +325,7 @@ on boot
     chown system system /dev/pts17
     mkdir /data/gps
     chmod 770 /data/gps
-    chown system system /data/gps
+    chown gps system /data/gps
     chmod 770 /system/etc/cert/lge.cer
     chown system system /system/etc/cert/lge.cer
     chmod 770 /system/etc/hmconfig.txt
