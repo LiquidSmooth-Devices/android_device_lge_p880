@@ -127,51 +127,51 @@
         <item>255</item>
     </integer-array>
 
+    <!-- Array of output values for button backlight corresponding to the LUX values
+in the config_autoBrightnessLevels array. This array should have size one greater
+than the size of the config_autoBrightnessLevels array.
+The brightness values must be between 0 and 255 and be non-decreasing.
+This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessButtonBacklightValues">
         <item>255</item>
         <item>255</item>
         <item>255</item>
         <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
     </integer-array>
 
+     <!-- Array of output values for keyboard backlight corresponding to the LUX values
+in the config_autoBrightnessLevels array. This array should have size one greater
+than the size of the config_autoBrightnessLevels array.
+The brightness values must be between 0 and 255 and be non-decreasing.
+This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessKeyboardBacklightValues">
         <item>255</item>
         <item>255</item>
         <item>255</item>
         <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>255</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
     </integer-array>
 
     <integer name="config_deviceHardwareKeys">7</integer>
+
+    <!-- Override the default detection behavior for the framework method
+android.view.ViewConfiguration#hasPermanentMenuKey().
+Valid settings are:
+0 - No change. Use the default autodetection behavior.
+1 - The device DOES have a permanent menu key; ignore autodetection.
+2 - The device DOES NOT have a permanent menu key; ignore autodetection. -->
+    <integer name="config_overrideHasPermanentMenuKey">1</integer>
 
     <bool name="config_enableLockScreenTranslucentDecor">true</bool>
 
