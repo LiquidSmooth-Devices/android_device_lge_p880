@@ -46,6 +46,9 @@ TARGET_RECOVERY_FSTAB = device/lge/p880/fstab.x3
 RECOVERY_FSTAB_VERSION = 2
 TARGET_USERIMAGES_USE_EXT4 := true
 
+# F2FS filesystem
+TARGET_USERIMAGES_USE_F2FS := true
+
 TARGET_SPECIFIC_HEADER_PATH := device/lge/p880/include
 
 BOARD_EGL_CFG := device/lge/p880/egl.cfg

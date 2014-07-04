@@ -116,6 +116,18 @@ PRODUCT_PACKAGES += \
     Nfc \
     Tag
 
+# F2FS filesystem
+PRODUCT_PACKAGES += \
+    mkfs.f2fs \
+    fsck.f2fs \
+    fibmap.f2fs \
+    f2fstat
+
+# Filesystem management tools
+PRODUCT_PACKAGES += \
+    setup_fs \
+    e2fsck
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/init.rmnet:system/bin/init.rmnet \
     $(LOCAL_PATH)/prebuilt/init.rmnet-down:system/bin/init.rmnet-down \
